@@ -1,0 +1,33 @@
+object FormPrincipal: TFormPrincipal
+  Left = 777
+  Height = 550
+  Top = 231
+  Width = 800
+  Caption = 'FormPrincipal'
+  ClientHeight = 550
+  ClientWidth = 800
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  LCLVersion = '3.4.0.0'
+  object GroupBoxRotas: TGroupBox
+    Left = 13
+    Height = 43
+    Top = 8
+    Width = 776
+    AutoSize = True
+    Caption = 'Rotas'
+    ClientHeight = 23
+    ClientWidth = 772
+    TabOrder = 0
+    object ComboBoxRotas: TComboBox
+      Left = 0
+      Height = 23
+      Top = 0
+      Width = 772
+      ItemHeight = 15
+      Style = csDropDownList
+      TabOrder = 0
+      OnChange = ComboBoxRotasChange
+    end
+  end
+end
