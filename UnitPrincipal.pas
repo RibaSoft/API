@@ -35,6 +35,8 @@ type
     procedure Login(Sender: TObject);
     procedure InsereDados(Sender: TObject);
     procedure PegaDados(Sender: TObject);
+    procedure MandaArquivo(Sender: TObject);
+    procedure POST(Sender: TObject);
     property Status: integer read FStatus write FStatus;
     property Codigo: string read FCodigo write FCodigo;
     property Mensagem: string read FMensagem write FMensagem;
@@ -58,7 +60,8 @@ begin
   ComboBoxRotas.Items.Add('https://ribasoft.com.br/api_testes/login.php');
   ComboBoxRotas.Items.Add('https://ribasoft.com.br/api_testes/insere_dados.php');
   ComboBoxRotas.Items.Add('https://ribasoft.com.br/api_testes/pega_dados.php');
-  //todo: criar rota para json array
+  ComboBoxRotas.Items.Add('https://ribasoft.com.br/api_testes/upload.php');
+  ComboBoxRotas.Items.Add('https://ribasoft.com.br/api_testes/post.php');
   ComboBoxRotas.ItemIndex := 0;
   ComboBoxRotasChange(Sender);
 end;
@@ -296,6 +299,176 @@ begin
       btn.Caption := 'Buscar';
       btn.OnClick := @PegaDados;
     end;
+
+    3: //Manda Arquivo
+    begin
+      I := 1;
+      GroupBoxs[I] := TGroupBox.Create(Self);
+      GroupBoxs[I].Name := 'GroupBox' + IntToStr(I);
+      GroupBoxs[I].Parent := Self;
+      GroupBoxs[I].Left := GroupBoxRotas.Left;
+      GroupBoxs[I].Top := GroupBoxRotas.Top + 50;
+      GroupBoxs[I].Caption := 'Local do Arquivo';
+      GroupBoxs[I].AutoSize := True;
+      GroupBoxs[I].Visible := True;
+
+      Edits[I] := TEdit.Create(Self);
+      Edits[I].Name := 'Edit' + IntToStr(I);
+      Edits[I].Parent := GroupBoxs[I];
+      Edits[I].Width := 150;
+      Edits[I].MaxLength := 60;
+      Edits[I].Text := '.\arquivo.txt';
+      Edits[I].Visible := True;
+
+      Inc(I);
+      GroupBoxs[I] := TGroupBox.Create(Self);
+      GroupBoxs[I].Name := 'GroupBox' + IntToStr(I);
+      GroupBoxs[I].Parent := Self;
+      GroupBoxs[I].Left := GroupBoxs[Pred(I)].Left + 160;
+      GroupBoxs[I].Top := GroupBoxRotas.Top + 50;
+      GroupBoxs[I].Caption := 'Teste 01';
+      GroupBoxs[I].AutoSize := True;
+
+      Edits[I] := TEdit.Create(Self);
+      Edits[I].Name := 'Edit' + IntToStr(I);
+      Edits[I].Parent := GroupBoxs[I];
+      Edits[I].Width := 150;
+      Edits[I].MaxLength := 60;
+      Edits[I].Clear;
+
+      Inc(I);
+      GroupBoxs[I] := TGroupBox.Create(Self);
+      GroupBoxs[I].Name := 'GroupBox' + IntToStr(I);
+      GroupBoxs[I].Parent := Self;
+      GroupBoxs[I].Left := GroupBoxs[Pred(I)].Left + 160;
+      GroupBoxs[I].Top := GroupBoxRotas.Top + 50;
+      GroupBoxs[I].Caption := 'Teste 02';
+      GroupBoxs[I].AutoSize := True;
+
+      Edits[I] := TEdit.Create(Self);
+      Edits[I].Name := 'Edit' + IntToStr(I);
+      Edits[I].Parent := GroupBoxs[I];
+      Edits[I].Width := 150;
+      Edits[I].MaxLength := 60;
+      Edits[I].Clear;
+
+      btn := TButton.Create(Self);
+      btn.Name := 'btn1';
+      btn.Parent := Self;
+      btn.Top := GroupBoxRotas.Top + 67;
+      btn.Left := GroupBoxs[I].Left + 160;
+      btn.Caption := 'Enviar';
+      btn.OnClick := @MandaArquivo;
+    end;
+
+    4: //POST
+    begin
+      I := 1;
+      GroupBoxs[I] := TGroupBox.Create(Self);
+      GroupBoxs[I].Name := 'GroupBox' + IntToStr(I);
+      GroupBoxs[I].Parent := Self;
+      GroupBoxs[I].Left := GroupBoxRotas.Left;
+      GroupBoxs[I].Top := GroupBoxRotas.Top + 50;
+      GroupBoxs[I].Caption := 'Teste 01';
+      GroupBoxs[I].AutoSize := True;
+      GroupBoxs[I].Visible := True;
+
+      Edits[I] := TEdit.Create(Self);
+      Edits[I].Name := 'Edit' + IntToStr(I);
+      Edits[I].Parent := GroupBoxs[I];
+      Edits[I].Width := 150;
+      Edits[I].MaxLength := 60;
+      Edits[I].Text := 'abc';
+      Edits[I].Visible := True;
+
+      Inc(I);
+      GroupBoxs[I] := TGroupBox.Create(Self);
+      GroupBoxs[I].Name := 'GroupBox' + IntToStr(I);
+      GroupBoxs[I].Parent := Self;
+      GroupBoxs[I].Left := GroupBoxs[Pred(I)].Left + 160;
+      GroupBoxs[I].Top := GroupBoxRotas.Top + 50;
+      GroupBoxs[I].Caption := 'Teste 02';
+      GroupBoxs[I].AutoSize := True;
+
+      Edits[I] := TEdit.Create(Self);
+      Edits[I].Name := 'Edit' + IntToStr(I);
+      Edits[I].Parent := GroupBoxs[I];
+      Edits[I].Width := 150;
+      Edits[I].MaxLength := 60;
+      Edits[I].Text := 'DEF';
+
+      Inc(I);
+      GroupBoxs[I] := TGroupBox.Create(Self);
+      GroupBoxs[I].Name := 'GroupBox' + IntToStr(I);
+      GroupBoxs[I].Parent := Self;
+      GroupBoxs[I].Left := GroupBoxs[Pred(I)].Left + 160;
+      GroupBoxs[I].Top := GroupBoxRotas.Top + 50;
+      GroupBoxs[I].Caption := 'Teste 03';
+      GroupBoxs[I].AutoSize := True;
+
+      Edits[I] := TEdit.Create(Self);
+      Edits[I].Name := 'Edit' + IntToStr(I);
+      Edits[I].Parent := GroupBoxs[I];
+      Edits[I].Width := 150;
+      Edits[I].MaxLength := 60;
+      Edits[I].Text := '123';
+
+      Inc(I);
+      GroupBoxs[I] := TGroupBox.Create(Self);
+      GroupBoxs[I].Name := 'GroupBox' + IntToStr(I);
+      GroupBoxs[I].Parent := Self;
+      GroupBoxs[I].Left := GroupBoxRotas.Left;
+      GroupBoxs[I].Top := GroupBoxRotas.Top + 100;
+      GroupBoxs[I].Caption := 'Retorno 01';
+      GroupBoxs[I].AutoSize := True;
+
+      Edits[I] := TEdit.Create(Self);
+      Edits[I].Name := 'Edit' + IntToStr(I);
+      Edits[I].Parent := GroupBoxs[I];
+      Edits[I].Width := 150;
+      Edits[I].MaxLength := 60;
+      Edits[I].Clear;
+
+      Inc(I);
+      GroupBoxs[I] := TGroupBox.Create(Self);
+      GroupBoxs[I].Name := 'GroupBox' + IntToStr(I);
+      GroupBoxs[I].Parent := Self;
+      GroupBoxs[I].Left := GroupBoxs[Pred(I)].Left + 160;
+      GroupBoxs[I].Top := GroupBoxRotas.Top + 100;
+      GroupBoxs[I].Caption := 'Retorno 02';
+      GroupBoxs[I].AutoSize := True;
+
+      Edits[I] := TEdit.Create(Self);
+      Edits[I].Name := 'Edit' + IntToStr(I);
+      Edits[I].Parent := GroupBoxs[I];
+      Edits[I].Width := 150;
+      Edits[I].MaxLength := 60;
+      Edits[I].Clear;
+
+      Inc(I);
+      GroupBoxs[I] := TGroupBox.Create(Self);
+      GroupBoxs[I].Name := 'GroupBox' + IntToStr(I);
+      GroupBoxs[I].Parent := Self;
+      GroupBoxs[I].Left := GroupBoxs[Pred(I)].Left + 160;
+      GroupBoxs[I].Top := GroupBoxRotas.Top + 100;
+      GroupBoxs[I].Caption := 'Retorno 03';
+      GroupBoxs[I].AutoSize := True;
+
+      Edits[I] := TEdit.Create(Self);
+      Edits[I].Name := 'Edit' + IntToStr(I);
+      Edits[I].Parent := GroupBoxs[I];
+      Edits[I].Width := 150;
+      Edits[I].MaxLength := 60;
+      Edits[I].Clear;
+
+      btn := TButton.Create(Self);
+      btn.Name := 'btn1';
+      btn.Parent := Self;
+      btn.Top := GroupBoxRotas.Top + 117;
+      btn.Left := GroupBoxs[I].Left + 160;
+      btn.Caption := 'Enviar';
+      btn.OnClick := @POST;
+    end;
   end;
 end;
 
@@ -304,8 +477,7 @@ procedure TFormPrincipal.Login(Sender: TObject);
 var
   auxH: TFPHTTPClient;
   auxRetorno: TStringStream;
-  auxJSon: TJSONData;
-  auxJSonDados: TJSONData;
+  auxJSon, auxJSonRetorno: TJSONData;
 begin
   try
     auxH := TFPHTTPClient.Create(Self);
@@ -327,13 +499,13 @@ begin
             Codigo := auxJSon.FindPath('codigo').AsString;
             Mensagem := auxJSon.FindPath('mensagem').AsString;
 
-            auxJSonDados := auxJSon.FindPath('retorno');
+            auxJSonRetorno := auxJSon.FindPath('retorno');
 
-            if (Assigned(auxJSonDados)) then
+            if (Assigned(auxJSonRetorno)) then
             begin
-              Edits[4].Text := auxJSonDados.FindPath('usuario').AsString;
-              Edits[5].Text := auxJSonDados.FindPath('senha').AsString;
-              Edits[6].Text := auxJSonDados.FindPath('teste').AsString;
+              Edits[4].Text := auxJSonRetorno.FindPath('usuario').AsString;
+              Edits[5].Text := auxJSonRetorno.FindPath('senha').AsString;
+              Edits[6].Text := auxJSonRetorno.FindPath('teste').AsString;
             end;
           finally
             FreeAndNil(auxJSon);
@@ -422,19 +594,90 @@ var
   auxH: TFPHTTPClient;
   auxRetorno: TStringStream;
   auxJSon: TJSONData;
-  auxJSonDados: TJSONArray;
-  I: Integer;
-  auxDataHora, auxNome: String;
-  auxIdade: Integer;
-  auxAltura: Currency;
+  auxJSonRetorno: TJSONArray;
+  I: integer;
+  auxDataHora, auxNome: string;
+  auxIdade: integer;
+  auxAltura: currency;
 begin
   try
     auxH := TFPHTTPClient.Create(Self);
     auxH.AllowRedirect := True;
 
+    try
+      auxRetorno := TStringStream.Create;
+      auxH.Get(ComboBoxRotas.Text, auxRetorno);
+      Status := auxH.ResponseStatusCode;
+      MessageDlg(auxRetorno.DataString, mtConfirmation, [mbOK], 0, mbYes);
+
+      if (Status = 200) then
+      begin
+        try
+          auxJSon := GetJSON(auxRetorno.DataString);
+          Codigo := auxJSon.FindPath('codigo').AsString;
+          Mensagem := auxJSon.FindPath('mensagem').AsString;
+
+          auxJSonRetorno := TJSONArray(auxJSon.FindPath('retorno'));
+
+          BufDados.Clear;
+          BufDados.FieldDefs.Add('DATA_HORA', ftDateTime);
+          BufDados.FieldDefs.Add('NOME', ftString, 60);
+          BufDados.FieldDefs.Add('IDADE', ftInteger);
+          BufDados.FieldDefs.Add('ALTURA', ftCurrency);
+          BufDados.CreateDataset;
+
+          if (Assigned(auxJSonRetorno)) then
+          begin
+            for I := 0 to Pred(auxJSonRetorno.Count) do
+            begin
+              auxDataHora := auxJSonRetorno.Items[I].FindPath('DATA_HORA').AsString; //2024-07-06 17:48:42
+              auxNome := auxJSonRetorno.Items[I].FindPath('NOME').AsString;
+              auxIdade := auxJSonRetorno.Items[I].FindPath('IDADE').AsInteger;
+              auxAltura := auxJSonRetorno.Items[I].FindPath('ALTURA').AsFloat;
+
+              BufDados.Append;
+              BufDados.FieldByName('DATA_HORA').AsDateTime :=
+                StrToDateTime(Copy(auxDataHora, 09, 2) + '/' + Copy(auxDataHora, 06, 2) + '/' +
+                Copy(auxDataHora, 01, 4) + ' ' + Copy(auxDataHora, 12, 8));
+              BufDados.FieldByName('NOME').AsString := auxNome;
+              BufDados.FieldByName('IDADE').AsInteger := auxIdade;
+              BufDados.FieldByName('ALTURA').AsCurrency := auxAltura;
+              BufDados.Post;
+            end;
+          end;
+        finally
+          FreeAndNil(auxJSon);
+        end;
+      end;
+    finally
+      FreeAndNil(auxRetorno);
+    end;
+  finally
+    FreeAndNil(auxH);
+  end;
+end;
+
+//===================================================== MANDA ARQUIVO ================================================\\
+procedure TFormPrincipal.MandaArquivo(Sender: TObject);
+var
+  auxH: TFPHTTPClient;
+  auxRetorno: TStringStream;
+  auxDados: TStringList;
+  auxJSon, auxJSonRetorno: TJSONData;
+  auxLocalArquivo: String;
+begin
+  auxLocalArquivo := Edits[1].Text;
+
+  try
+    auxH := TFPHTTPClient.Create(Self);
+    auxH.AllowRedirect := True;
+    try
+      auxDados := TStringList.Create;
+      auxDados.Add('teste01=abc');
+      auxDados.Add('teste02=DEF');
       try
         auxRetorno := TStringStream.Create;
-        auxH.Get(ComboBoxRotas.Text, auxRetorno);
+        auxH.FileFormPost(ComboBoxRotas.Text, auxDados, 'arquivo', auxLocalArquivo, auxRetorno);
         Status := auxH.ResponseStatusCode;
         MessageDlg(auxRetorno.DataString, mtConfirmation, [mbOK], 0, mbYes);
 
@@ -445,32 +688,12 @@ begin
             Codigo := auxJSon.FindPath('codigo').AsString;
             Mensagem := auxJSon.FindPath('mensagem').AsString;
 
-            auxJSonDados := TJSONArray(auxJSon.FindPath('retorno'));
+            auxJSonRetorno := auxJSon.FindPath('retorno');
 
-            BufDados.Clear;
-            BufDados.FieldDefs.Add('DATA_HORA',ftDateTime);
-            BufDados.FieldDefs.Add('NOME',ftString, 60);
-            BufDados.FieldDefs.Add('IDADE',ftInteger);
-            BufDados.FieldDefs.Add('ALTURA',ftCurrency);
-            BufDados.CreateDataset;
-
-            if (Assigned(auxJSonDados)) then
+            if (Assigned(auxJSonRetorno)) then
             begin
-              for I := 0 to Pred(auxJSonDados.Count) do
-              begin
-                auxDataHora := auxJSonDados.Items[I].FindPath('DATA_HORA').AsString; //2024-07-06 17:48:42
-                auxNome := auxJSonDados.Items[I].FindPath('NOME').AsString;
-                auxIdade := auxJSonDados.Items[I].FindPath('IDADE').AsInteger;
-                auxAltura := auxJSonDados.Items[I].FindPath('ALTURA').AsFloat;
-
-                BufDados.Append;
-                BufDados.FieldByName('DATA_HORA').AsDateTime := StrToDateTime(Copy(auxDataHora,09,2) + '/' +
-                  Copy(auxDataHora,06,2) + '/' + Copy(auxDataHora,01,4) + ' ' + Copy(auxDataHora,12,8));
-                BufDados.FieldByName('NOME').AsString := auxNome;
-                BufDados.FieldByName('IDADE').AsInteger := auxIdade;
-                BufDados.FieldByName('ALTURA').AsCurrency := auxAltura;
-                BufDados.Post;
-              end;
+              Edits[2].Text := auxJSonRetorno.FindPath('teste01').AsString;
+              Edits[3].Text := auxJSonRetorno.FindPath('teste02').AsString;
             end;
           finally
             FreeAndNil(auxJSon);
@@ -479,6 +702,61 @@ begin
       finally
         FreeAndNil(auxRetorno);
       end;
+    finally
+      FreeAndNil(auxDados);
+    end;
+  finally
+    FreeAndNil(auxH);
+  end;
+end;
+
+//======================================================= POST =======================================================\\
+procedure TFormPrincipal.POST(Sender: TObject);
+var
+  auxH: TFPHTTPClient;
+  auxRetorno: TStringStream;
+  auxDados: TStringList;
+  auxJSon, auxJSonRetorno: TJSONData;
+begin
+  try
+    auxH := TFPHTTPClient.Create(Self);
+    auxH.AllowRedirect := True;
+    try
+      auxDados := TStringList.Create;
+      auxDados.Add('teste01=' + Edits[1].Text);
+      auxDados.Add('teste02=' + Edits[2].Text);
+      auxDados.Add('teste03=' + Edits[3].Text);
+      try
+        auxRetorno := TStringStream.Create;
+        auxH.FormPost(ComboBoxRotas.Text, auxDados, auxRetorno);
+        Status := auxH.ResponseStatusCode;
+        MessageDlg(auxRetorno.DataString, mtConfirmation, [mbOK], 0, mbYes);
+
+        if (Status = 200) then
+        begin
+          try
+            auxJSon := GetJSON(auxRetorno.DataString);
+            Codigo := auxJSon.FindPath('codigo').AsString;
+            Mensagem := auxJSon.FindPath('mensagem').AsString;
+
+            auxJSonRetorno := auxJSon.FindPath('retorno');
+
+            if (Assigned(auxJSonRetorno)) then
+            begin
+              Edits[4].Text := auxJSonRetorno.FindPath('teste01').AsString;
+              Edits[5].Text := auxJSonRetorno.FindPath('teste02').AsString;
+              Edits[6].Text := auxJSonRetorno.FindPath('teste03').AsString;
+            end;
+          finally
+            FreeAndNil(auxJSon);
+          end;
+        end;
+      finally
+        FreeAndNil(auxRetorno);
+      end;
+    finally
+      FreeAndNil(auxDados);
+    end;
   finally
     FreeAndNil(auxH);
   end;
